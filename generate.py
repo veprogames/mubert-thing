@@ -2,7 +2,7 @@ import requests
 import json
 import time
 import random
-from os import makedirs
+from os import makedirs, path
 
 def get_track_by_tags(tags, pat, duration, maxit=20, loop=False):
     if loop:
@@ -24,16 +24,18 @@ def get_track_by_tags(tags, pat, duration, maxit=20, loop=False):
     assert rdata['status'] == 1, rdata['error']['text']
     trackurl = rdata['data']['tasks'][0]['download_link']
 
-    print('Generating track ', end='')
+    print('Generating track...', end='')
     for i in range(maxit):
         r = requests.get(trackurl)
         if r.status_code == 200:
+            print("")
             return trackurl
         time.sleep(1)
 
-def download(url):
-    makedirs("outputs", exist_ok=True)
-    filename = f"outputs/{time.time()}.mp3"
+def download(url, subfolder = ""):
+    output_path = path.join("outputs", subfolder)
+    filename = path.join(output_path, f"{time.time()}.mp3")
+    makedirs(output_path, exist_ok=True)
     with requests.get(url, stream=True) as req:
         req.raise_for_status()
         with open(filename, "wb") as file:

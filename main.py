@@ -40,6 +40,6 @@ pat = pat.get_pat(email)
 
 print(f"Tags: {tags}")
 
-url = generate.get_track_by_tags(tags, pat, args.length)
+url = generate.get_track_by_tags(tags, pat, args.length, maxit=50)
 print(url)
 generate.download(url)

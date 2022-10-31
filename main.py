@@ -24,6 +24,12 @@ parser.add_argument("-l", "--length",
     default=30,
     help=f"length in seconds")
 
+parser.add_argument("-L", "--loop",
+    type=bool,
+    default=False,
+    action=argparse.BooleanOptionalAction,
+    help=f"If true, create a loop")
+
 args = parser.parse_args()
 
 tags = [tag for tag in args.tags.split(",") if tag in TAG_LIST]
@@ -40,6 +46,6 @@ pat = pat.get_pat(email)
 
 print(f"Tags: {tags}")
 
-url = generate.get_track_by_tags(tags, pat, args.length, maxit=50)
+url = generate.get_track_by_tags(tags, pat, args.length, maxit=50, loop=args.loop)
 print(url)
 generate.download(url)

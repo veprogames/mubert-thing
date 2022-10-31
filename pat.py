@@ -3,9 +3,12 @@ import requests
 import random
 import json
 
+def rand_letters(n):
+    return "".join([chr(random.randint(97, 97 + 25)) for i in range(n)])
+
 def rand_email():
-    name = "".join([chr(random.randint(97, 97 + 25)) for i in range(8)])
-    return f"{name}@freedom.org"
+    tld = random.choice(["com", "net", "org"])
+    return f"{rand_letters(8)}@{rand_letters(8)}.{tld}"
 
 def get_pat(email: str):
     r = requests.post('https://api-b2b.mubert.com/v2/GetServiceAccess',
